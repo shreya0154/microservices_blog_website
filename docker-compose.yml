@@ -1,0 +1,54 @@
+services:
+  auth:
+    build: ./auth
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb+srv://iib2022011:1234@blogcluster.n0x3qcl.mongodb.net/?retryWrites=true&w=majority&appName=BlogCluster
+      - JWT_SECRET=ZSp4H71GY6f+D6nR0fSDsPR6l1ncZznj++2FYHGjjAA=
+    depends_on:
+      - auth-db
+    networks:
+      - blog-network
+
+  auth-db:
+    image: mongo
+    container_name: auth-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - authdb_data:/data/db
+
+  post:
+    build: ./post
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGO_URI=mongodb+srv://iib2022011:1234@blogcluster.n0x3qcl.mongodb.net/?retryWrites=true&w=majority&appName=BlogCluster
+      - JWT_SECRET=ZSp4H71GY6f+D6nR0fSDsPR6l1ncZznj++2FYHGjjAA=
+    depends_on:
+      - auth
+    networks:
+      - blog-network
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "5005:5005"
+    environment:
+      - PORT=5005
+      - AUTH_SERVICE_URL=http://auth:5001
+      - POST_SERVICE_URL=http://post:5002
+    depends_on:
+      - auth
+      - post
+    networks:
+      - blog-network
+
+volumes:
+  authdb_data:
+
+networks:
+  blog-network:
+    driver: bridge
+
