@@ -35,7 +35,10 @@ app.post('/auth/register', async (req, res) => {
     const response = await axios.post(`${process.env.AUTH_SERVICE_URL}/auth/register`, req.body);
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json({ message: err.message });
+    // res.status(err.response?.status || 500).json({ message: err.message });
+    res.status(err.response?.status || 500).json(
+      err.response?.data || { message: "Gateway Server error" }
+    );
   }
 });
 
@@ -44,7 +47,10 @@ app.post('/auth/login', async (req, res) => {
     const response = await axios.post(`${process.env.AUTH_SERVICE_URL}/auth/login`, req.body);
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response.status).json({ message: err.message });
+    // res.status(err.response.status).json({ message: err.message });
+    res.status(err.response.status).json(
+      err.response?.data || { message: "Gateway Server error" }
+    );
   }
 });
 
@@ -60,7 +66,10 @@ app.get('/auth/me', async (req, res) => {
     });
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json({ message: err.message });
+    // res.status(err.response?.status || 500).json({ message: err.message });
+    res.status(err.response?.status || 500).json(
+      err.response?.data || { message: "Gateway Server error" }
+    );
   }
 });
 
@@ -73,7 +82,10 @@ app.post('/post/createPost', async (req, res) => {
     });
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json({ message: err.message });
+    // res.status(err.response?.status || 500).json({ message: err.message });
+    res.status(err.response?.status || 500).json(
+      err.response?.data || { message: "Gateway Server error" }
+    );
   }
 });
 
@@ -82,7 +94,10 @@ app.get('/post/getAllPosts', async (req, res) => {
     const response = await axios.get(`${process.env.POST_SERVICE_URL}/post/getAllPosts`);
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json({ message: err.message });
+    // res.status(err.response?.status || 500).json({ message: err.message });
+    res.status(err.response?.status || 500).json(
+      err.response?.data || { message: "Gateway Server error" }
+    );
   }
 });
 
@@ -91,7 +106,10 @@ app.get('/post/getPost/:id', async (req, res) => {
     const response = await axios.get(`${process.env.POST_SERVICE_URL}/post/getPost/${req.params.id}`);
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json({ message: err.message });
+    // res.status(err.response?.status || 500).json({ message: err.message });
+    res.status(err.response?.status || 500).json(
+      err.response?.data || { message: "Gateway Server error" }
+    );
   }
 });
 
