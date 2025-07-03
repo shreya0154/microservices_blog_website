@@ -1,0 +1,16 @@
+
+auth/node_modules/
+auth/.env
+
+
+post/node_modules/
+post/.env
+
+gateway/node_modules/
+gateway/.env
+
+
+*.log
+.DS_Store
+.env
+node_modules/

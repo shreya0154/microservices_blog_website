@@ -1,0 +1,53 @@
+services:
+  auth:
+    build: ./auth
+    # ports:
+    #   - "5001:5001"
+
+    env_file:
+      - ./auth/.env
+    # depends_on:
+    #   - auth-db
+    networks:
+      - blog-network
+
+  # auth-db:
+  #   image: mongo
+  #   container_name: auth-db
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - authdb_data:/data/db
+
+  post:
+    build: ./post
+    # ports:
+    #   - "5002:5002"
+    
+    env_file:
+      - ./post/.env
+
+    depends_on:
+      - auth
+    networks:
+      - blog-network
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "5005:5005"
+    env_file:
+      - ./gateway/.env
+    depends_on:
+      - auth
+      - post
+    networks:
+      - blog-network
+
+volumes:
+  authdb_data:
+
+networks:
+  blog-network:
+    driver: bridge
+
